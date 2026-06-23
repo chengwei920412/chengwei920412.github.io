@@ -30,15 +30,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup SSH and clone private submodule
+      - name: Setup PAT and clone private submodule
         env:
-          DOCS_DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_KEY }}
+          DOCS_PAT: ${{ secrets.DOCS_PAT }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$DOCS_DEPLOY_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes"
+          git config --global url."https://chengwei920412:${DOCS_PAT}@github.com/chengwei920412/docs.git".insteadOf "git@github.com:chengwei920412/docs.git"
           git submodule update --init --recursive
 
       - name: Setup Python

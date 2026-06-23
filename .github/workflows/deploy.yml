@@ -33,7 +33,7 @@ jobs:
           echo "${{ secrets.DOCS_DEPLOY_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v4

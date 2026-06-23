@@ -34,7 +34,7 @@ jobs:
         env:
           DOCS_PAT: ${{ secrets.DOCS_PAT }}
         run: |
-          git config --global url."https://chengwei920412:${DOCS_PAT}@github.com/chengwei920412/docs.git".insteadOf "git@github.com:chengwei920412/docs.git"
+          git config --global url."https://x-access-token:${DOCS_PAT}@github.com/chengwei920412/docs.git".insteadOf "git@github.com:chengwei920412/docs.git"
           git submodule update --init --recursive
 
       - name: Setup Python

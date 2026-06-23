@@ -31,11 +31,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup PAT and clone private submodule
-        env:
-          DOCS_PAT: ${{ secrets.DOCS_PAT }}
-        run: |
-          git config --global url."https://x-access-token:${DOCS_PAT}@github.com/chengwei920412/docs.git".insteadOf "git@github.com:chengwei920412/docs.git"
-          git submodule update --init --recursive
+        with:
+          submodules: true
+          ssh-key: ${{ secrets.SUBMODULE_SSH_KEY }}
 
       - name: Setup Python
         uses: actions/setup-python@v5

@@ -27,18 +27,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup SSH for private submodule
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DOCS_DEPLOY_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
-
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: true
+
+      - name: Setup SSH and clone private submodule
+        env:
+          DOCS_DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DOCS_DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes"
+          git submodule update --init --recursive
 
       - name: Setup Python
         uses: actions/setup-python@v5

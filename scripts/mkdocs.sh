@@ -1,21 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 
 cd "$(dirname "$0")"
 THIS_FILE_PATH="$(pwd)"
 
 install() {
-    pip install mkdocs mkdocs-gitbook
+    pip install -r "$THIS_FILE_PATH/../docs/requirements.txt"
     mkdocs --version
 }
 
 generate() {
-    pushd $THIS_FILE_PATH/..//docs > /dev/null
+    pushd "$THIS_FILE_PATH/../docs" > /dev/null
     mkdocs build
     popd > /dev/null
 }
 
 serve() {
-    pushd $THIS_FILE_PATH/..//docs > /dev/null
+    pushd "$THIS_FILE_PATH/../docs" > /dev/null
     mkdocs serve
     popd > /dev/null
 }

@@ -33,6 +33,18 @@ jobs:
           submodules: true
           ssh-key: ${{ secrets.SUBMODULE_SSH_KEY }}
 
+      - name: Ensure full docs history
+        shell: bash
+        run: |
+          if [[ "$(git -C docs rev-parse --is-shallow-repository)" == "true" ]]; then
+            git -C docs fetch --unshallow --no-tags
+          fi
+
+          if [[ "$(git -C docs rev-parse --is-shallow-repository)" != "false" ]]; then
+            echo "The docs submodule still has incomplete Git history." >&2
+            exit 1
+          fi
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

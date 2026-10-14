@@ -1,4 +1,4 @@
-name: Deploy MkDocs to GitHub Pages and Cloudflare Pages
+name: Deploy MkDocs to GitHub Pages
 
 on:
   push:
@@ -67,10 +67,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy docs/site --project-name=docscw --branch=master
